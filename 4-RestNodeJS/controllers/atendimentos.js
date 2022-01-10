@@ -1,4 +1,5 @@
 // Exporta as funções
+// |Função recebe 'app' e retorna o que está entre '{}'|
 module.exports = app => {
     // Exporta as funções para APP
     app.get('/', (req, res) => {

@@ -1,11 +1,12 @@
+// Responsabilidade: Iniciar o servidor
+
 // Importa módulos
-const express = require('express')
-const consign = require('consign')
+// "importa o express já configurado"
+const customExpress = require('./config/custom-express')
 
-// Instânciação dos módulos
-const app = express()
-const port = 3000
+// Instancia o 'app' a partir do módulo 'customExpress'
+const app = customExpress()
 
-app.listen(port, () => {
-    console.log(`Example app listening localhost ${port}`)
+app.listen(3000, () => {
+    console.log(`Example app listening localhost 3000`)
 })
