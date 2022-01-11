@@ -11,6 +11,7 @@ module.exports = () => {
     const app = express()
 
     // Pede para o app usar o bodyParser
+    // 'use' é um método do próprio Express
     app.use(bodyParser.urlencoded({extended: true}))
     app.use(bodyParser.json())
 
