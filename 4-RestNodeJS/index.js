@@ -7,9 +7,20 @@ const port = 3000
 // "importa o express já configurado"
 const customExpress = require('./config/custom-express')
 
-// Instancia o 'app' a partir do módulo 'customExpress'
-const app = customExpress()
+// Conexao com banco de dados (Persistent)
+const conexao = require('./infraestrutura/conexao')
 
-app.listen(port, () => {
-    console.log(`Example app listening localhost ${port}`)
-})
+conexao.connect(erro => {
+    console.log(`Tentando conexão com banco de dados...`)
+    if(erro) {
+        // Erro de conexao
+        console.error(erro)
+    } else {
+        console.log(`BD conectado com sucesso!`)
+        // Instancia o 'app' a partir do módulo 'customExpress'
+        const app = customExpress()
+        app.listen(port, () => {
+            console.log(`***APP - |Example app listening localhost ${port}|***`)
+        })
+    }
+} )
