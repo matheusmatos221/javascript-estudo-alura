@@ -10,7 +10,31 @@ class Atendimento {
 
         const dataCriacao = moment().format('YYYY-MM-DD HH:MM:SS')
         const data = moment(atendimento.data, 'DD/MM/YYYY').format('YYYY-MM-DD HH:MM:SS')
-        // ...atendimento = Tudo que estiver dentro de atendimento
+
+        //Regra de negócio: Data é posterior a data de criação?
+        const dataIsValid = moment(data).isSameOrAfter(dataCriacao) //Retorna booleano
+        const clienteIsValid = atendimento.cliente.length >= 4 //Retorna booleano
+
+        const validacoes = [
+            {
+                nome: 'data',
+                valido: dataIsValid,
+                mensagem: 'Data deve ser maior ou igual a data atual'
+            },
+            {
+                nome: 'cliente',
+                valido: clienteIsValid,
+                mensagem: 'Data deve ser maior ou igual a data atual'
+            }
+        ]
+
+        const erros = validacoes.filter(campo => !campo.valido)
+        const existemErros = erros.length
+
+        if (existemErros){
+            res.status(400).json(erros)
+        } else {
+            // ...atendimento = Tudo que estiver dentro de atendimento
         const atendimentoDatado = {...atendimento, dataCriacao, data}
 
         // Código SQL que será executado na query
@@ -19,12 +43,12 @@ class Atendimento {
         // A partir da conexão com o BD, executa a query SQL com os valores e a função callback é a resposta do SQL (Erro ou resultado).
         conexao.query(sql, atendimentoDatado, (erro, resultado) => {
             if (erro) {
-                console.error(erro);
+                res.status(400).json(erro)
             } else {
-                console.log(resultado)
+                res.status(201).json(atendimento)
             }
-        } )
-
+        } 
+        )}
     }
 }
 
