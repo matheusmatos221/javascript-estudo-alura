@@ -1,15 +1,30 @@
-const express = require('express')
-const app = express()
+// Responsabilidade: Iniciar o servidor
+
+// Define uma variavel para declarar a porta
 const port = 3000
 
-app.get('/', (req, res) => {
-    res.send('Hello World')
-})
+// Importa módulos
+// "importa o express já configurado"
+const customExpress = require('./config/custom-express')
 
-app.get('/atendimentos', (req, res) => {
-    res.send('Você está na rota de ATENDIMENTOS e está realizando um GETgi')
-})
+// Conexao com banco de dados (Persistent)
+const conexao = require('./infraestrutura/conexao')
+const Tabelas = require('./infraestrutura/tabelas')
 
-app.listen(port, () => {
-    console.log(`Example app listening localhost ${port}`)
-})
+conexao.connect(erro => {
+    console.log(`Tentando conexão com banco de dados...`)
+    if(erro) {
+        // Erro de conexao
+        console.log(`Falha de conexão com Banco de Dados!`)
+        console.error(erro)
+    } else {
+        console.log(`BD conectado com sucesso!`)
+        Tabelas.init(conexao)
+
+        // Instancia o 'app' a partir do módulo 'customExpress'
+        const app = customExpress()
+        app.listen(port, () => {
+            console.log(`***APP - |Example app listening localhost ${port}|***`)
+        })
+    }
+} )
