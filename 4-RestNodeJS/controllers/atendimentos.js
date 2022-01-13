@@ -18,4 +18,10 @@ module.exports = app => {
         const atendimento = req.body
         Atendimento.adiciona(atendimento, res) // A resposta é enviada aqui! Não enviar de novo com console.log(res)
     })
+    
+    app.patch('/atendimentos/:id', (req, res) => {
+        const id = parseInt(req.params.id)
+        const valores = req.body
+        Atendimento.altera(id, valores, res)
+    })
 }
