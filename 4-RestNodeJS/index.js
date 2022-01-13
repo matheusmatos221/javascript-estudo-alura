@@ -24,7 +24,9 @@ conexao.connect(erro => {
         // Instancia o 'app' a partir do módulo 'customExpress'
         const app = customExpress()
         app.listen(port, () => {
-            console.log(`***APP - |Example app listening localhost ${port}|***`)
+            console.log('|-----------------------------------------------------------------|')
+            console.log(`|*********  APP -  Example app listening localhost ${port}  *********|`)
+            console.log('|-----------------------------------------------------------------|')
         })
     }
 } )

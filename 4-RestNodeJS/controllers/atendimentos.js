@@ -3,18 +3,30 @@ const Atendimento = require('../models/atendimentos')
 
 // Exporta as funções
 // |Função recebe 'app' e retorna o que está entre '{}'|
-
-const Atendimento = require('../models/atendimentos')
-
 module.exports = app => {
     // Exporta as funções para APP    
     app.get('/atendimentos', (req, res) => {
-        res.send('Você está na rota de ATENDIMENTOS e está realizando um GET')
+        Atendimento.lista(res) // Lista atendimentos cadastrados
+    })
+    
+    app.get('/atendimentos/:id', (req, res) => {
+        const id = parseInt(req.params.id)
+        Atendimento.buscaPorId(id, res) // Lista atendimento específico
     })
     
     app.post('/atendimentos', (req, res) => {
         const atendimento = req.body
-        Atendimento.adiciona(atendimento)
-        res.send('Você está na rota de ATENDIMENTOS e está realizando um POST')
+        Atendimento.adiciona(atendimento, res) // A resposta é enviada aqui! Não enviar de novo com console.log(res)
+    })
+    
+    app.patch('/atendimentos/:id', (req, res) => {
+        const id = parseInt(req.params.id)
+        const valores = req.body
+        Atendimento.altera(id, valores, res)
+    })
+    
+    app.delete('/atendimentos/:id', (req, res) => {
+        const id = parseInt(req.params.id)
+        Atendimento.deletaPorId(id, res)
     })
 }
