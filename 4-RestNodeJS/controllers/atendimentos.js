@@ -9,6 +9,11 @@ module.exports = app => {
         Atendimento.lista(res) // Lista atendimentos cadastrados
     })
     
+    app.get('/atendimentos/:id', (req, res) => {
+        const id = parseInt(req.params.id)
+        Atendimento.buscaPorId(id, res) // Lista atendimento específico
+    })
+    
     app.post('/atendimentos', (req, res) => {
         const atendimento = req.body
         Atendimento.adiciona(atendimento, res) // A resposta é enviada aqui! Não enviar de novo com console.log(res)
