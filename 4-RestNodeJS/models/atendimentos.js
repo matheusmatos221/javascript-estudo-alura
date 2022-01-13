@@ -84,9 +84,20 @@ class Atendimento {
             if (err) {
                 res.status(400).json(err)
             } else {
-                res.status(200).json(result)
+                res.status(200).json({id, ...valores})
             }
         })
+
+    }
+    deletaPorId(id, res){
+        const sql = `DELETE FROM atendimentos WHERE id=${id}`
+        conexao.query(sql, (erro, resultado) =>{
+            if (erro) {
+                res.status(400).json(erro)
+            } else {
+                res.status(200).json({id})
+            }
+        } )
 
     }
 }
