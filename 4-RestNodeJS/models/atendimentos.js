@@ -9,30 +9,46 @@ const repositorio = require('../repositorios/atendimentos')
 
 // Nova classe modelo
 class Atendimento {
+    constructor() {
+        //Regra de negócio: Data é posterior a data de criação?
+        this.dataIsValid = ({data, dataCriacao}) => moment(data).isSameOrAfter(dataCriacao) //Retorna booleano
+        this.clienteIsValid = ({tamanho}) => tamanho >= 10 //Retorna booleano
+
+        this.valida = (parametrosValidacoes) => {
+            this.validacoes.filter(campo => {
+                const {nome} = campo
+                const parametro = parametrosValidacoes[nome]
+
+                return !campo.valido(parametro)
+            })
+        }
+
+        this.validacoes = [
+            {
+                nome: 'data',
+                valido: this.dataIsValid,
+                mensagem: 'Data deve ser maior ou igual a data atual'
+            },
+            {
+                nome: 'cliente',
+                valido: this.clienteIsValid,
+                mensagem: 'Data deve ser maior ou igual a data atual'
+            }
+        ]
+    }
+
     // Função adiciona
     adiciona(atendimento) {
 
         const dataCriacao = moment().format('YYYY-MM-DD HH:MM:SS') // moment() = data atual
         const data = moment(atendimento.data, 'DD/MM/YYYY').format('YYYY-MM-DD HH:MM:SS')
 
-        //Regra de negócio: Data é posterior a data de criação?
-        const dataIsValid = moment(data).isSameOrAfter(dataCriacao) //Retorna booleano
-        const clienteIsValid = atendimento.cliente.length >= 4 //Retorna booleano
+        const parametrosValidacoes = {
+            data: {data, dataCriacao},
+            cliente: { tamanho: atendimento.cliente.lenght}
+        }
 
-        const validacoes = [
-            {
-                nome: 'data',
-                valido: dataIsValid,
-                mensagem: 'Data deve ser maior ou igual a data atual'
-            },
-            {
-                nome: 'cliente',
-                valido: clienteIsValid,
-                mensagem: 'Data deve ser maior ou igual a data atual'
-            }
-        ]
-
-        const erros = validacoes.filter(campo => !campo.valido)
+        const erros = this.valida(parametrosValidacoes)
         const existemErros = erros.length
 
         if (existemErros){
