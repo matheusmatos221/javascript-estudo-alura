@@ -1,8 +1,10 @@
 // fs = FileSystem
 const fs = require('fs')
+const path = require('path')
 
 module.exports = (caminho, nomeDoArquivo, callbackImagemCriada) =>{
-    const novoCaminho = `./assets/imagens/${nomeDoArquivo}.jpg` // Caminho do diretório interpolado com nome do arquivo
+    const tipoArquivo = path.extname(caminho)
+    const novoCaminho = `./assets/imagens/${nomeDoArquivo}${tipoArquivo}` // Caminho do diretório interpolado com nome do arquivo
 
     fs.createReadStream(caminho) // Lê o arquivo que está no caminho
         .pipe(fs.createWriteStream(novoCaminho)) // Escreve no novo caminho
