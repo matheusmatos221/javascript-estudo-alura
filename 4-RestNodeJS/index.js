@@ -8,8 +8,8 @@ const port = 3000
 const customExpress = require('./config/custom-express')
 
 // Conexao com banco de dados (Persistent)
-const conexao = require('./infraestrutura/conexao')
-const Tabelas = require('./infraestrutura/tabelas')
+const conexao = require('./infraestrutura/database/conexao')
+const Tabelas = require('./infraestrutura/database/tabelas')
 
 console.log('|-----------------------------------------------------------------|')
 console.log(`|*********  APP -  Example app listening localhost ${port}  *********|`)
