@@ -6,7 +6,9 @@ const Atendimento = require('../models/atendimentos')
 module.exports = app => {
     // Exporta as funções para APP    
     app.get('/atendimentos', (req, res) => {
-        Atendimento.lista(res) // Lista atendimentos cadastrados
+        Atendimento.lista() // Lista atendimentos cadastrados
+            .then(resultados => res.status(200).json(resultados))
+            .catch(erros => res.status(400).json(400))
     })
     
     app.get('/atendimentos/:id', (req, res) => {
