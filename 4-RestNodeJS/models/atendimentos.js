@@ -1,5 +1,7 @@
 // Importa o moment para manipular e formatar a data no formato do SQL
 const moment = require('moment')
+
+const axios = require('axios')
 const atendimentos = require('../controllers/atendimentos')
 // Importa a conexão, necessária para utilizar o BD
 const conexao = require('../infraestrutura/conexao')
@@ -47,7 +49,7 @@ class Atendimento {
                 res.status(400).json(erro)
             } else {
                 res.status(201).json(atendimentoDatado)
-                console.log(`Novo atendimento criado com sucesso: ${JSON.stringify(atendimentoDatado)}`) //JSON.stringify transforma um objeto do tipo JSON em string, parse() faz o contrario
+                // console.log(`Novo atendimento criado com sucesso: ${JSON.stringify(atendimentoDatado)}`) //JSON.stringify transforma um objeto do tipo JSON em string, parse() faz o contrario
             }
         } 
         )}
@@ -65,13 +67,20 @@ class Atendimento {
     }
     buscaPorId(id, res){
         const sql = `SELECT * FROM atendimentos WHERE id=${id}`
+        
+        // Função assincrona(async) faz com que seja executada no await e só depois o código continua a execução, isso garante que o que for declarado no await será executado "na hora"
+        conexao.query(sql, async (erro, resultados) => {
+            const atendimento = resultados[0]
+            const cpf = atendimento.cliente
 
-        conexao.query(sql, (erro, resultados) => {
             if (erro) {
                 res.status(400).json(erro)
             } else {
-                const resultado = resultados[0]
-                res.status(200).json(resultado)
+                // const cliente = await axios.get(`http://localhost:8082/${cpf}`)
+                // Chamaremos de { data } para pegar a informação diretamente do objeto retornado
+                const { data } = await axios.get(`http://localhost:8082/${cpf}`)
+                atendimento.cliente = data
+                res.status(200).json(atendimento)
             }
         })
     }
