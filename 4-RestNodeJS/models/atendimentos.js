@@ -4,7 +4,7 @@ const moment = require('moment')
 const axios = require('axios')
 const atendimentos = require('../controllers/atendimentos')
 // Importa a conexão, necessária para utilizar o BD
-const conexao = require('../infraestrutura/conexao')
+const conexao = require('../infraestrutura/database/conexao')
 
 // Nova classe modelo
 class Atendimento {
