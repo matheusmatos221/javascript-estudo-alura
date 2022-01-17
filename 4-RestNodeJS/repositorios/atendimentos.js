@@ -21,6 +21,10 @@ class Atendimento {
         const sql = 'UPDATE atendimentos SET ? WHERE id=?'
         return query(sql, [valores, id])
     }
+    deletaPorId(id){
+        const sql = `DELETE FROM atendimentos WHERE id=?`
+        return query(sql, id)
+    }
 
 }
 

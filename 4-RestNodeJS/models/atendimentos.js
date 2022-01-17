@@ -85,19 +85,12 @@ class Atendimento {
             .then( resultados => {
                 return ({id, ...valores})
             })
-
-
     }
-    deletaPorId(id, res){
-        const sql = `DELETE FROM atendimentos WHERE id=${id}`
-        conexao.query(sql, (erro, resultado) =>{
-            if (erro) {
-                res.status(400).json(erro)
-            } else {
-                res.status(200).json({id})
-            }
-        } )
-
+    deletaPorId(id){
+        return repositorio.deletaPorId(id)
+            .then(resultados => {
+                return({id, "status": "deleted"})
+            })
     }
 }
 

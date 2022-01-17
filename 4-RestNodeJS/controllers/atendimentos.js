@@ -35,6 +35,8 @@ module.exports = app => {
     
     app.delete('/atendimentos/:id', (req, res) => {
         const id = parseInt(req.params.id)
-        Atendimento.deletaPorId(id, res)
+        Atendimento.deletaPorId(id)
+            .then(resultado => res.status(200).json(resultado))
+            .catch(erros => res.status(400).json(erros))
     })
 }
