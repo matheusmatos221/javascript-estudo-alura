@@ -14,9 +14,14 @@ class Atendimento {
 
     }
     buscaPorId(id){
-        const sql = `SELECT * FROM atendimentos WHERE id=${id}`
-        return query(sql)
+        const sql = `SELECT * FROM atendimentos WHERE id=?`
+        return query(sql, id)
     }
+    altera(valores, id){
+        const sql = 'UPDATE atendimentos SET ? WHERE id=?'
+        return query(sql, [valores, id])
+    }
+
 }
 
 module.exports = new Atendimento()

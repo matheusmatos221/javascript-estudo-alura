@@ -76,18 +76,16 @@ class Atendimento {
                 return ({atendimento})
             })
     }
-    altera(id, valores, res){
+    altera(id, valores){
+        // Se houver informação de data, formata a data
         if (valores.data){
             valores.data = moment(valores.data, 'DD/MM/YYYY').format('YYYY-MM-DD HH:MM:SS')
         }
-        const sql = 'UPDATE atendimentos SET ? WHERE id=?'
-        conexao.query(sql, [valores, id], (err, result) =>{
-            if (err) {
-                res.status(400).json(err)
-            } else {
-                res.status(200).json({id, ...valores})
-            }
-        })
+        return repositorio.altera(valores, id)
+            .then( resultados => {
+                return ({id, ...valores})
+            })
+
 
     }
     deletaPorId(id, res){
