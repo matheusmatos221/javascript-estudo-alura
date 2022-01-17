@@ -13,7 +13,9 @@ module.exports = app => {
     
     app.get('/atendimentos/:id', (req, res) => {
         const id = parseInt(req.params.id)
-        Atendimento.buscaPorId(id, res) // Lista atendimento específico
+        Atendimento.buscaPorId(id) // Lista atendimento específico
+            .then(atendimento => res.status(200).json(atendimento))
+            .catch(erros => res.status(400).json(erros))
     })
     
     app.post('/atendimentos', (req, res) => {

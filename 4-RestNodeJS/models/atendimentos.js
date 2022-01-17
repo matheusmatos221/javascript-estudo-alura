@@ -66,24 +66,15 @@ class Atendimento {
     lista(){
         return repositorio.lista()
     }
-    buscaPorId(id, res){
-        const sql = `SELECT * FROM atendimentos WHERE id=${id}`
-        
-        // Função assincrona(async) faz com que seja executada no await e só depois o código continua a execução, isso garante que o que for declarado no await será executado "na hora"
-        conexao.query(sql, async (erro, resultados) => {
-            const atendimento = resultados[0]
-            const cpf = atendimento.cliente
-
-            if (erro) {
-                res.status(400).json(erro)
-            } else {
-                // const cliente = await axios.get(`http://localhost:8082/${cpf}`)
-                // Chamaremos de { data } para pegar a informação diretamente do objeto retornado
-                const { data } = await axios.get(`http://localhost:8082/${cpf}`)
+    buscaPorId(id){
+        return repositorio.buscaPorId(id)
+            .then(resultados => {
+                const atendimento = resultados[0]
+                const cpf = atendimento.cliente
+                const { data } = axios.get(`http://localhost:8082/${cpf}`)
                 atendimento.cliente = data
-                res.status(200).json(atendimento)
-            }
-        })
+                return ({atendimento})
+            })
     }
     altera(id, valores, res){
         if (valores.data){
